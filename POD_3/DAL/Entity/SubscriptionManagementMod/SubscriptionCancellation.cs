@@ -10,6 +10,7 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
         [MaxLength(10)]
         public int SubscriptionId { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime CancellationDate { get; set; }
 
         [StringLength(100)]
