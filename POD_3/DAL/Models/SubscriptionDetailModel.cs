@@ -19,7 +19,7 @@ namespace POD_3.DAL.Models
         [DataType(DataType.DateTime)]
         public DateTime SubscriptionEndDate { get; set; }
 
-        [MaxLength(10)]
+        [Range(1, 10)]
         public int AmountPaid { get; set; }
 
         [StringLength(50)]

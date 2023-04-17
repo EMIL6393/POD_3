@@ -52,6 +52,7 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
         public async Task<IActionResult> PurchaseSubscription(SubscriptionRequestModel subscriptionRequestModel)
         {
             var subscriptionEntity = mapper.Map<UserSubscription>(subscriptionRequestModel);
+
             subscriptionEntity.SubscriptionStatus = "New";
 
             var subscription = await repository.UserSubscriptionRepository.GetByUsernameAsync(subscriptionEntity.UserName);

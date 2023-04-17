@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POD_3.Context;
 
@@ -11,9 +12,10 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20230417153607_rangeRemove")]
+    partial class rangeRemove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,6 +28,7 @@ namespace POD_3.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
@@ -39,6 +42,7 @@ namespace POD_3.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("SubscriptionId")
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -53,6 +57,7 @@ namespace POD_3.Migrations
                 {
                     b.Property<int>("PlanId")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanId"), 1L, 1);
@@ -88,11 +93,13 @@ namespace POD_3.Migrations
                 {
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubscriptionId"), 1L, 1);
 
                     b.Property<int>("AmountPaid")
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentMode")
@@ -101,6 +108,7 @@ namespace POD_3.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("PlanId")
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SubscriptionEndDate")

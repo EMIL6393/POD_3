@@ -7,12 +7,12 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
        
 
         [Key]
-        [MaxLength(10)]
+        [Range(1, 10)]
         public int SubscriptionId { get; set; }
         [StringLength(10)]
         public string UserName { get; set; } = null!;
 
-        [MaxLength(10)]
+        [Range(1, 10)]
         public int PlanId { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -21,7 +21,7 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
         [DataType(DataType.DateTime)]
         public DateTime SubscriptionEndDate { get; set; }
 
-        [MaxLength(10)]
+        [Range(1, 10)]
         public int AmountPaid { get; set; }
 
         [StringLength(50)]

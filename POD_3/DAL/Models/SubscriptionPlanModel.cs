@@ -9,7 +9,7 @@ namespace POD_3.DAL.Models
         [StringLength(100)]
         public string Name { get; set; } = null!;
 
-        [MaxLength(10)]
+        [Range(1, 10)]
         public int PricePerMonth { get; set; }
 
     }
