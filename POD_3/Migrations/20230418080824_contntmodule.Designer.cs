@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POD_3.Context;
 
@@ -11,9 +12,10 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20230418080824_contntmodule")]
+    partial class contntmodule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +156,7 @@ namespace POD_3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionPlansLimits");
+                    b.ToTable("SubscriptionPlansLimit");
 
                     b.HasData(
                         new
@@ -339,120 +341,6 @@ namespace POD_3.Migrations
                     b.HasCheckConstraint("chk_subscription_status", "SubscriptionStatus IN ('New', 'Renewed', 'Cancelled')");
                 });
 
-            modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.SubscriptionPlanSLA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ExpectedSLAsInDays")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlanName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SubscriptionPlanSLAs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ExpectedSLAsInDays = 7,
-                            PlanName = "basic"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ExpectedSLAsInDays = 1,
-                            PlanName = "pro"
-                        });
-                });
-
-            modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.SupportTicket", b =>
-                {
-                    b.Property<int>("TicketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 4, 18, 0, 0, 0, 0, DateTimeKind.Local));
-
-                    b.Property<DateTime>("ExpectedResolutionOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RaisedByUserName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("TicketDetails")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("TicketStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasDefaultValue("Open");
-
-                    b.Property<string>("TicketSummary")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("TicketType")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("TicketId");
-
-                    b.ToTable("SupportTickets");
-
-                    b.HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > GETDATE()");
-
-                    b.HasCheckConstraint("CK_SupportTicket_TicketStatus", "TicketStatus IN ('Open', 'Closed')");
-
-                    b.HasCheckConstraint("CK_SupportTicket_TicketType", "TicketType IN ('Subscription', 'Billing', 'PostManagement', 'Others')");
-                });
-
-            modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.TicketSolution", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ResolutionDetails")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("ResolvedByUserName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<DateTime>("ResolvedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SupportTicketId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TicketSolutions");
-                });
-
             modelBuilder.Entity("POD_3.DAL.Entity.AccountManagementMod.SocialAccountTracker", b =>
                 {
                     b.HasOne("POD_3.DAL.Entity.AccountManagementMod.UserSocialAccount", "UserSocialAccount")
@@ -497,17 +385,6 @@ namespace POD_3.Migrations
                     b.Navigation("SubscriptionPlan");
                 });
 
-            modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.TicketSolution", b =>
-                {
-                    b.HasOne("POD_3.DAL.Entity.SupportModule.SupportTicket", "SupportTickets")
-                        .WithOne("TicketSolution")
-                        .HasForeignKey("POD_3.DAL.Entity.SupportModule.TicketSolution", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SupportTickets");
-                });
-
             modelBuilder.Entity("POD_3.DAL.Entity.AccountManagementMod.SocialAccountType", b =>
                 {
                     b.Navigation("UserSocialAccounts");
@@ -527,11 +404,6 @@ namespace POD_3.Migrations
                 {
                     b.Navigation("SubscriptionCancellation")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.SupportTicket", b =>
-                {
-                    b.Navigation("TicketSolution");
                 });
 #pragma warning restore 612, 618
         }

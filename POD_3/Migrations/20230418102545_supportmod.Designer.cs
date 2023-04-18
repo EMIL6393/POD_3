@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POD_3.Context;
 
@@ -11,9 +12,10 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20230418102545_supportmod")]
+    partial class supportmod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +156,7 @@ namespace POD_3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionPlansLimits");
+                    b.ToTable("SubscriptionPlansLimit");
 
                     b.HasData(
                         new
