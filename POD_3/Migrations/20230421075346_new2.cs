@@ -4,7 +4,7 @@
 
 namespace POD_3.Migrations
 {
-    public partial class rangeconvert : Migration
+    public partial class new2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

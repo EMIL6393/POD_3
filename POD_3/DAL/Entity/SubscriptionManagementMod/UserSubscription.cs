@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace POD_3.DAL.Entity.SubscriptionManagementMod
 {
@@ -11,6 +12,8 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
         public int SubscriptionId { get; set; }
         [StringLength(10)]
         public string UserName { get; set; } = null!;
+
+        public int UserId { get; set; }
 
         [Range(1, 10)]
         public int PlanId { get; set; }
@@ -32,5 +35,8 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
 
         public virtual SubscriptionPlan SubscriptionPlan { get; set; }
         public virtual SubscriptionCancellation SubscriptionCancellation { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
     }
 }

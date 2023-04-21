@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using POD_3.BLL.Repositories.Impl;
 using POD_3.BLL.Repositories.Repository;
 using POD_3.Context;
+using POD_3.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddDbContext<DefaultContext>(opt =>
     opt.EnableSensitiveDataLogging();
     opt.EnableServiceProviderCaching();
 });
-
+builder.RegisterProjectDependencies();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +41,8 @@ app.UseCors(opt =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

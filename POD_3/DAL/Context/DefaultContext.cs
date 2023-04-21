@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using POD_3;
+using POD_3.Core;
+using POD_3.DAL.Entity;
 using POD_3.DAL.Entity.AccountManagementMod;
 using POD_3.DAL.Entity.ContentManagementModule;
 using POD_3.DAL.Entity.SubscriptionManagementMod;
@@ -20,6 +22,8 @@ namespace POD_3.Context
         public DbSet<SubscriptionCancellation> SubscriptionCancellations { get; set; } = null!;
         public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; } = null!;
         public DbSet<UserSubscription> UserSubscriptions { get; set; }=null!;
+
+        public DbSet<User> Users { get; set; } = null!;
 
         public DbSet<SocialAccountTracker> SocialAccountTrackers { get; set; } = null!;
         public DbSet<SocialAccountType> SocialAccountTypes { get; set; } = null!;
@@ -103,7 +107,7 @@ namespace POD_3.Context
             modelBuilder.Entity<SupportTicket>()
             .HasOne(c => c.TicketSolution)
             .WithOne(p => p.SupportTickets)
-            .HasForeignKey<TicketSolution>(p => p.Id);
+            .HasForeignKey<TicketSolution>(p => p.SupportTicketId);
 
             modelBuilder.Entity<SupportTicket>()
             .Property(p => p.CreatedOn)
@@ -124,6 +128,16 @@ namespace POD_3.Context
 
             SeedSubscriptionPlanSLA(modelBuilder);
 
+            //User
+
+            modelBuilder.Entity<UserSubscription>()
+           .HasOne(s => s.User)
+           .WithOne(u => u.UserSubscription)
+           .HasForeignKey<UserSubscription>(s => s.UserId);
+
+            SeedUser(modelBuilder);
+
+
         }
 
         private static void SeedSubscriptionPlans(ModelBuilder modelBuilder)
@@ -131,7 +145,7 @@ namespace POD_3.Context
             List<SubscriptionPlan> subscriptionPlans = new List<SubscriptionPlan>()
             {
                 new SubscriptionPlan() { PlanId = 1, Name = "basic", PricePerMonth = 10 },
-                new SubscriptionPlan() { PlanId = 2, Name = "pro", PricePerMonth = 50 }
+                new SubscriptionPlan() { PlanId = 2, Name = "pro", PricePerMonth = 25 }
             };
 
             modelBuilder.Entity<SubscriptionPlan>().HasData(subscriptionPlans); 
@@ -170,6 +184,15 @@ namespace POD_3.Context
             modelBuilder.Entity<SubscriptionPlanSLA>().HasData(subscriptionPlanSLAs);
 
         }
+
+        private static void SeedUser(ModelBuilder modelBuilder)
+        {
+            var user = new User() { Id = 1, Email = "admin123@gmail.com", Role = "SupportExecutive", Password = Util.PasswordHashing("admin123") };
+            modelBuilder.Entity<User>().HasData(user);
+
+        }
+
+
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

@@ -2,19 +2,13 @@
 
 namespace POD_3.DAL.Models
 {
-    public class SubscriptionRequestModel
+    public class RenewRequestModel
     {
+
         [StringLength(10)]
         public string UserName { get; set; } = null!;
 
-        [DataType(DataType.EmailAddress)]
-        public string? Email { get; set; }
-
-        [StringLength(150, MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        public string? Password { get; set; }
-
-        public string PlanName{ get; set; }
+        public string PlanName { get; set; }
 
         public int planDuration { get; set; }
 
@@ -22,5 +16,6 @@ namespace POD_3.DAL.Models
 
         [StringLength(50)]
         public string PaymentMode { get; set; } = null!;
+
     }
 }

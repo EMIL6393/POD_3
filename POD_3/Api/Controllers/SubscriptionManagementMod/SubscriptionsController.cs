@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using POD_3.BLL.Repositories.Impl;
 using POD_3.BLL.Repositories.Repository;
 using POD_3.Context;
+using POD_3.Core;
+using POD_3.DAL.Entity;
 using POD_3.DAL.Entity.SubscriptionManagementMod;
 using POD_3.DAL.Models;
 
@@ -42,6 +44,11 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
                 throw new ArgumentNullException("username");
             }
             var result = await repository.UserSubscriptionRepository.GetByUsernameAsync(username);
+            if (result == null)
+            {
+                return GenerateErrorResponse(null, errorMessage: "Subscription does not exist"); 
+                
+            }
             var userEntity = mapper.Map<SubscriptionDetailModel>(result);
             var plan = await repository.SubscriptionPlanRepository.GetByIdAsync(result.PlanId);
             userEntity.Plan = mapper.Map<SubscriptionPlanModel>(plan);
@@ -51,6 +58,11 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
         [HttpPost("purchase")]
         public async Task<IActionResult> PurchaseSubscription(SubscriptionRequestModel subscriptionRequestModel)
         {
+            if (subscriptionRequestModel == null)
+            {
+                throw new ArgumentNullException(nameof(subscriptionRequestModel));
+            }
+
             var subscriptionEntity = mapper.Map<UserSubscription>(subscriptionRequestModel);
 
             subscriptionEntity.SubscriptionStatus = "New";
@@ -63,22 +75,33 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
 
             subscriptionEntity.PlanId = await repository.SubscriptionPlanRepository.GetByNameAsync(subscriptionRequestModel.PlanName);
 
+            var user = new User() { Email = subscriptionRequestModel.Email, Password = Util.PasswordHashing(subscriptionRequestModel.Password) };
+
+            await repository.UserRepository.AddAsync(user);
+            await repository.SaveAsync();
+
+
+            var userId = await repository.UserRepository.GetByNameAsync(subscriptionRequestModel.Email);
+            subscriptionEntity.UserId = userId;
+
+
             await repository.UserSubscriptionRepository.AddAsync(subscriptionEntity);
+
             await repository.SaveAsync();
 
             return GenerateSuccessResponse($"Subscription for {subscriptionEntity.UserName} created");
         }
 
         [HttpPut("{subscriptionid}/renew")]
-        public async Task<IActionResult> RenewSubscription(int subscriptionid, SubscriptionRequestModel subscriptionRequestModel)
+        public async Task<IActionResult> RenewSubscription(int subscriptionid, RenewRequestModel renewRequestModel)
         {
             if ( subscriptionid <= 0 )
             {
                 throw new ArgumentException(nameof(subscriptionid));
             }
-            if ( subscriptionRequestModel == null )
+            if ( renewRequestModel == null )
             {
-                throw new ArgumentNullException(nameof(subscriptionRequestModel));
+                throw new ArgumentNullException(nameof(renewRequestModel));
             }
 
             var subscription = await repository.UserSubscriptionRepository.GetByIdAsync(subscriptionid);
@@ -87,9 +110,12 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
                 return GenerateErrorResponse(null, errorMessage: $"Subscription doesn't exist");
             }
 
-            var subscriptionEntity = mapper.Map<UserSubscription>(subscriptionRequestModel);
+            var subscriptionEntity = mapper.Map<UserSubscription>(renewRequestModel);
+
             subscriptionEntity.SubscriptionStatus = "Renewed";
             subscriptionEntity.SubscriptionId = subscriptionid;
+            subscriptionEntity.PlanId = await repository.SubscriptionPlanRepository.GetByNameAsync(renewRequestModel.PlanName);
+            subscriptionEntity.UserId = subscription.UserId;
 
             await repository.UserSubscriptionRepository.UpdatePlanAsync(subscriptionEntity);
             await repository.SaveAsync();

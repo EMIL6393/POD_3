@@ -12,8 +12,8 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20230418102710_supportmodagain")]
-    partial class supportmodagain
+    [Migration("20230421075722_seedusertable")]
+    partial class seedusertable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -289,7 +289,7 @@ namespace POD_3.Migrations
                         {
                             PlanId = 2,
                             Name = "pro",
-                            PricePerMonth = 50
+                            PricePerMonth = 25
                         });
                 });
 
@@ -323,6 +323,9 @@ namespace POD_3.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -331,6 +334,9 @@ namespace POD_3.Migrations
                     b.HasKey("SubscriptionId");
 
                     b.HasIndex("PlanId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserSubscriptions");
 
@@ -387,7 +393,7 @@ namespace POD_3.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 4, 18, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2023, 4, 21, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("ExpectedResolutionOn")
                         .HasColumnType("datetime2");
@@ -432,7 +438,10 @@ namespace POD_3.Migrations
             modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.TicketSolution", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ResolutionDetails")
                         .IsRequired()
@@ -452,7 +461,45 @@ namespace POD_3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SupportTicketId")
+                        .IsUnique();
+
                     b.ToTable("TicketSolutions");
+                });
+
+            modelBuilder.Entity("POD_3.DAL.Entity.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin123@gmail.com",
+                            Password = "240BE518FABD2724DDB6F04EEB1DA5967448D7E831C08C8FA822809F74C720A9",
+                            Role = "SupportExecutive"
+                        });
                 });
 
             modelBuilder.Entity("POD_3.DAL.Entity.AccountManagementMod.SocialAccountTracker", b =>
@@ -496,14 +543,22 @@ namespace POD_3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("POD_3.DAL.Entity.User", "User")
+                        .WithOne("UserSubscription")
+                        .HasForeignKey("POD_3.DAL.Entity.SubscriptionManagementMod.UserSubscription", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("SubscriptionPlan");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.TicketSolution", b =>
                 {
                     b.HasOne("POD_3.DAL.Entity.SupportModule.SupportTicket", "SupportTickets")
                         .WithOne("TicketSolution")
-                        .HasForeignKey("POD_3.DAL.Entity.SupportModule.TicketSolution", "Id")
+                        .HasForeignKey("POD_3.DAL.Entity.SupportModule.TicketSolution", "SupportTicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -534,6 +589,11 @@ namespace POD_3.Migrations
             modelBuilder.Entity("POD_3.DAL.Entity.SupportModule.SupportTicket", b =>
                 {
                     b.Navigation("TicketSolution");
+                });
+
+            modelBuilder.Entity("POD_3.DAL.Entity.User", b =>
+                {
+                    b.Navigation("UserSubscription");
                 });
 #pragma warning restore 612, 618
         }
