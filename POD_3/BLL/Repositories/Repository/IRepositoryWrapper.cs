@@ -11,6 +11,10 @@
         public ILoginRepository LoginRepository { get; }
 
         public ISocialAccountTypesRepository SocialAccountTypesRepository { get; }
+
+        public IUserSocialAccountRepository UserSocialAccountRepository { get; }
+
+        public ISocialAccountTrackerRepository SocialAccountTrackerRepository { get; }
         Task<int> SaveAsync();
 
     }

@@ -32,7 +32,7 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
         public async Task<IActionResult> GetPlans()
         {
             var result = await repository.SubscriptionPlanRepository.GetAllAsync();
-            var userEntity = mapper.Map<IEnumerable<SubscriptionPlanModel>>(result);
+            var userEntity = mapper.Map<List<SubscriptionPlanModel>>(result);
             return GenerateSuccessResponse(userEntity);
         }
 

@@ -18,6 +18,10 @@ namespace POD_3.BLL.Repositories.Impl
 
         public ISocialAccountTypesRepository SocialAccountTypesRepository { get; set; }
 
+        public IUserSocialAccountRepository UserSocialAccountRepository { get; set; }
+
+        public ISocialAccountTrackerRepository SocialAccountTrackerRepository { get; set; }
+
         public RepositoryWrapper(DefaultContext dbContext)
         {
             this.dbContext = dbContext;
@@ -27,6 +31,8 @@ namespace POD_3.BLL.Repositories.Impl
             this.UserRepository = new UserRepository(dbContext);
             this.LoginRepository = new LoginRepository(dbContext);
             this.SocialAccountTypesRepository = new SocialAccountTypesRepository(dbContext);
+            this.UserSocialAccountRepository = new UserSocialAccountRepository(dbContext);
+            this.SocialAccountTrackerRepository =   new SocialAccountTrackerRepository(dbContext);
         }
 
 

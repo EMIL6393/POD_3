@@ -16,12 +16,13 @@ namespace POD_3.BLL.Repositories.Impl
 
         public async Task<List<SocialAccountType>> GetAllAsync()
         {
-            return await dbContext.SocialAccountTypes.ToListAsync();
+             var result = await dbContext.SocialAccountTypes.ToListAsync();
+            return result;
         }
 
-        public async Task<SocialAccountType> GetByIdAsync(int planId)
+        public async Task<SocialAccountType> GetByIdAsync(int Id)
         {
-            var accountType = await dbContext.SocialAccountTypes.FindAsync(planId);
+            var accountType = await dbContext.SocialAccountTypes.FindAsync(Id);
             return accountType;
         }
     }

@@ -23,7 +23,7 @@ builder.Services.AddDbContext<DefaultContext>(opt =>
     opt.EnableSensitiveDataLogging();
     opt.EnableServiceProviderCaching();
 });
-builder.RegisterProjectDependencies();
+//builder.RegisterProjectDependencies();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

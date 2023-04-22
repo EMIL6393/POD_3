@@ -20,7 +20,7 @@ namespace POD_3.BLL.Repositories.Impl
 
         }
 
-        public async Task<bool> DeleteRole(int id)
+        public async Task<bool> Delete(int id)
         {
             var result = await dbContext.UserSocialAccounts.FindAsync(id);
             if (result != null)
