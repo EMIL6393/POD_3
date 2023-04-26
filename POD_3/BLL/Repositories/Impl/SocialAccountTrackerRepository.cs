@@ -14,9 +14,9 @@ namespace POD_3.BLL.Repositories.Impl
             this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(SocialAccountTracker accountTracker)
+        public async Task AddAsync(SocialAccountTracker socialAccountTracker)
         {
-            await dbContext.SocialAccountTrackers.AddAsync(accountTracker);
+            await dbContext.SocialAccountTrackers.AddAsync(socialAccountTracker);
         }
 
         public async Task<SocialAccountTracker> GetAsync(string username)

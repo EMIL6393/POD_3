@@ -7,7 +7,7 @@ namespace POD_3.BLL.Repositories.Repository
     {
         Task<UserSocialAccount?> GetByUsernameAsync(string username);
         Task<UserSocialAccount?> GetByIdAsync(int id);
-        Task AddAsync(UserSocialAccount socialAccount);
+        Task AddAsync(UserSocialAccount account);
         Task<bool> Delete(int id);
         Task UpdatePlanAsync (UserSocialAccount updatedSocialAccount);
 

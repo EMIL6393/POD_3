@@ -24,8 +24,8 @@ namespace POD_3.DAL.Entity.AccountManagementMod
         [StringLength(25)]
         public string SubscriptionName { get; set; }=null!;
 
-        public virtual SocialAccountType SocialAccountType { get; set; }
+        public virtual SocialAccountType? SocialAccountType { get; set; }
 
-        public virtual List<SocialAccountTracker> SocialAccountTrackers { get; set; }
+        public virtual List<SocialAccountTracker>? SocialAccountTrackers { get; set; }
     }
 }

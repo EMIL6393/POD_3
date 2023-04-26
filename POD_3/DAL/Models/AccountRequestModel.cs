@@ -16,7 +16,6 @@ namespace POD_3.DAL.Models
 
         public string SocialAccount { get; set; }
 
-        //public string SubscriptionName { get; set; } = null!;
 
     }
 }

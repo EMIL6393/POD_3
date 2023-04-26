@@ -14,9 +14,9 @@ namespace POD_3.BLL.Repositories.Impl
             this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(UserSocialAccount socialAccount)
+        public async Task AddAsync(UserSocialAccount account)
         {
-            await dbContext.UserSocialAccounts.AddAsync(socialAccount);
+            await dbContext.UserSocialAccounts.AddAsync(account);
 
         }
 

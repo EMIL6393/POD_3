@@ -32,7 +32,7 @@ namespace POD_3.Api.Controllers.AccountManagementModule
             return GenerateSuccessResponse(typeEntity);
         }
 
-       /* [HttpPost("addsocialaccount")]
+       [HttpPost("addsocialaccount")]
         public async Task<IActionResult> AddSocialAccount(AccountRequestModel accountRequestModel)
         {
             if (accountRequestModel == null)
@@ -43,21 +43,22 @@ namespace POD_3.Api.Controllers.AccountManagementModule
             var accountEntity = mapper.Map<UserSocialAccount>(accountRequestModel);
             accountEntity.EncryptedPassword = Util.PasswordHashing(accountRequestModel.Password);
             var subs =  await repository.UserSubscriptionRepository.GetByUsernameAsync(accountRequestModel.UserName);
-            if(subs != null)
+            if(subs == null)
             {
                 GenerateErrorResponse(null, errorMessage: "Subscription dosn't exist");
             }
             var plan = await repository.SubscriptionPlanRepository.GetByIdAsync(subs.PlanId);
             accountEntity.SubscriptionName = plan.Name;
+            accountEntity.SocialAccountTypeId = await repository.SocialAccountTypesRepository.GetByNameAsync(accountRequestModel.SocialAccount);
 
-            await UserSocialAccountRepository.AddAsync(accountEntity);
+            await repository.UserSocialAccountRepository.AddAsync(accountEntity);
 
-
+            await repository.SaveAsync();
 
             return GenerateSuccessResponse(accountEntity);
 
         }
-       */
+       
 
 
 

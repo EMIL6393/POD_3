@@ -12,6 +12,8 @@ namespace POD_3.DAL.Entity.AccountManagementMod
 
         public virtual List<UserSocialAccount> UserSocialAccounts { get; set; }
 
+        public virtual List<SocialAccountTracker> SocialAccountTrackers { get; set; }
+
 
     }
 }

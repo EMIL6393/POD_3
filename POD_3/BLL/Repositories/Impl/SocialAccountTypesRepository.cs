@@ -2,6 +2,7 @@
 using POD_3.BLL.Repositories.Repository;
 using POD_3.Context;
 using POD_3.DAL.Entity.AccountManagementMod;
+using System.Xml.Linq;
 
 namespace POD_3.BLL.Repositories.Impl
 {
@@ -24,6 +25,12 @@ namespace POD_3.BLL.Repositories.Impl
         {
             var accountType = await dbContext.SocialAccountTypes.FindAsync(Id);
             return accountType;
+        }
+
+        public async Task<int> GetByNameAsync(string accountType)
+        {
+            var account = await dbContext.SocialAccountTypes.SingleAsync(x => x.AccountType == accountType);
+            return account.Id;
         }
     }
 }

@@ -8,5 +8,7 @@ namespace POD_3.BLL.Repositories.Repository
         Task<List<SocialAccountType>> GetAllAsync();
         Task<SocialAccountType> GetByIdAsync(int planId);
 
+        Task<int> GetByNameAsync(string accountType);
+
     }
 }

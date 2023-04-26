@@ -14,6 +14,7 @@ namespace POD_3.MappingProfile
             CreateMap<UserSubscription, SubscriptionDetailModel>();
             CreateMap<SocialAccountType, AccountTypesModel>();
             CreateMap<AccountTypesModel, SocialAccountType>();
+            CreateMap<AccountRequestModel, UserSocialAccount>();
 
             CreateMap<User, LoginResponseModel>();
             CreateMap<SubscriptionRequestModel, UserSubscription>()
