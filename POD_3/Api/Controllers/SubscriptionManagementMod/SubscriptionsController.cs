@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using POD_3.BLL.Repositories.Impl;
@@ -11,18 +12,17 @@ using POD_3.DAL.Models;
 
 namespace POD_3.Api.Controllers.SubscriptionManagementMod
 {
+   [Authorize]
     public class SubscriptionsController : BaseController
     {
-        private readonly DefaultContext context;
         private readonly IMapper mapper;
         private readonly IRepositoryWrapper repository;
 
         //private readonly ISubscriptionPlanRepository _subscriptionPlanRepository;
 
 
-        public SubscriptionsController(DefaultContext context, IMapper mapper, IRepositoryWrapper wrapper)
+        public SubscriptionsController(IMapper mapper, IRepositoryWrapper wrapper)
         {
-            this.context = context;
             this.mapper = mapper;
             repository = wrapper;
             //_subscriptionPlanRepository = subscriptionPlanRepository;
@@ -75,11 +75,14 @@ namespace POD_3.Api.Controllers.SubscriptionManagementMod
 
             subscriptionEntity.PlanId = await repository.SubscriptionPlanRepository.GetByNameAsync(subscriptionRequestModel.PlanName);
 
-            var user = new User() { Email = subscriptionRequestModel.Email, Password = Util.PasswordHashing(subscriptionRequestModel.Password) };
+            var check = await repository.UserRepository.CheckAsync(subscriptionRequestModel.Email);
+            if (check == false)
+            {
+                var user = new User() { Email = subscriptionRequestModel.Email, Password = Util.PasswordHashing(subscriptionRequestModel.Password) };
 
-            await repository.UserRepository.AddAsync(user);
-            await repository.SaveAsync();
-
+                await repository.UserRepository.AddAsync(user);
+                await repository.SaveAsync();
+            }
 
             var userId = await repository.UserRepository.GetByNameAsync(subscriptionRequestModel.Email);
             subscriptionEntity.UserId = userId;

@@ -24,5 +24,16 @@ namespace POD_3.BLL.Repositories.Impl
             var user = await dbContext.Users.SingleOrDefaultAsync(x => x.Email == email);
             return user.Id;
         }
+
+        public async Task<bool> CheckAsync(string email)
+        {
+            var check = await dbContext.Users.SingleOrDefaultAsync(x => x.Email == email);
+            if(check != null)
+            {
+                return true;
+            }
+            return false;
+
+        }
     }
 }

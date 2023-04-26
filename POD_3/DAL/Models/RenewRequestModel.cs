@@ -12,7 +12,7 @@ namespace POD_3.DAL.Models
 
         public int planDuration { get; set; }
 
-        public int AmountPaid { get; set; }
+        public double AmountPaid { get; set; }
 
         [StringLength(50)]
         public string PaymentMode { get; set; } = null!;

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POD_3.Context;
 
@@ -11,9 +12,10 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20230423063051_useridnonunique")]
+    partial class useridnonunique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,8 +301,8 @@ namespace POD_3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubscriptionId"), 1L, 1);
 
-                    b.Property<double>("AmountPaid")
-                        .HasColumnType("float");
+                    b.Property<int>("AmountPaid")
+                        .HasColumnType("int");
 
                     b.Property<string>("PaymentMode")
                         .IsRequired()
@@ -390,7 +392,7 @@ namespace POD_3.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 4, 25, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2023, 4, 23, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("ExpectedResolutionOn")
                         .HasColumnType("datetime2");

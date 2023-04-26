@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POD_3", "POD_3\POD_3.csproj", "{E3961818-6A3F-44A6-9F3C-90D481BDD8F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POD_3", "POD_3\POD_3.csproj", "{E3961818-6A3F-44A6-9F3C-90D481BDD8F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POD_3_Tests", "POD_3_Tests\POD_3_Tests.csproj", "{F75B09D9-BB62-4F22-B9A4-C968810B1D5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E3961818-6A3F-44A6-9F3C-90D481BDD8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3961818-6A3F-44A6-9F3C-90D481BDD8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3961818-6A3F-44A6-9F3C-90D481BDD8F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F75B09D9-BB62-4F22-B9A4-C968810B1D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F75B09D9-BB62-4F22-B9A4-C968810B1D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F75B09D9-BB62-4F22-B9A4-C968810B1D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F75B09D9-BB62-4F22-B9A4-C968810B1D5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

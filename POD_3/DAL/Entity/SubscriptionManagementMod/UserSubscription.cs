@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace POD_3.DAL.Entity.SubscriptionManagementMod
@@ -25,7 +26,9 @@ namespace POD_3.DAL.Entity.SubscriptionManagementMod
         public DateTime SubscriptionEndDate { get; set; }
 
         [Range(1, 10)]
-        public int AmountPaid { get; set; }
+        [DataType(DataType.Currency)]
+
+        public double AmountPaid { get; set; }
 
         [StringLength(50)]
         public string PaymentMode { get; set; }=null!;

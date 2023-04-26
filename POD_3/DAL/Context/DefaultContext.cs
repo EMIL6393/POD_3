@@ -135,6 +135,10 @@ namespace POD_3.Context
            .WithOne(u => u.UserSubscription)
            .HasForeignKey<UserSubscription>(s => s.UserId);
 
+            modelBuilder.Entity<UserSubscription>()
+            .HasIndex(s => s.UserId)
+            .IsUnique(false);
+
             SeedUser(modelBuilder);
 
 

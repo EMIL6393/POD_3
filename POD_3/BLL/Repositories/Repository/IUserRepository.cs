@@ -8,5 +8,7 @@ namespace POD_3.BLL.Repositories.Repository
         Task AddAsync(User user);
 
         Task<int> GetByNameAsync(string email);
+
+        Task<bool> CheckAsync(string email);
     }
 }

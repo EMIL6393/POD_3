@@ -23,7 +23,7 @@ namespace POD_3.BLL.Repositories.Impl
 
         public async Task<UserSubscription?> GetByIdAsync(int subscriptionId)
         {
-            var subscription = await dbContext.UserSubscriptions.FindAsync(subscriptionId); 
+            var subscription = await dbContext.UserSubscriptions.Where(s=>s.SubscriptionId==subscriptionId).SingleOrDefaultAsync(); 
             return subscription;
         }
 
