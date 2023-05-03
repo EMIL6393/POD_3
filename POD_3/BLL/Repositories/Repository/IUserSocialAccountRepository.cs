@@ -11,5 +11,7 @@ namespace POD_3.BLL.Repositories.Repository
         Task<bool> Delete(int id);
         Task UpdatePlanAsync (UserSocialAccount updatedSocialAccount);
 
+        Task<int> GetByUsernameAsyncCount(string username);
+
     }
 }

@@ -85,6 +85,10 @@ namespace POD_3.Context
             .HasForeignKey(s=>s.AccountId);
 
             modelBuilder.Entity<SocialAccountTracker>()
+            .Property(u => u.Date)
+            .HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<SocialAccountTracker>()
             .HasCheckConstraint("chk_action", "Action IN ('AccountAdded', 'AccountRemoved', 'AccountPasswordChanged')");
 
             modelBuilder.Entity<UserSocialAccount>()
@@ -118,7 +122,11 @@ namespace POD_3.Context
             .HasDefaultValue("Open");
 
             modelBuilder.Entity<SupportTicket>()
-            .HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > GETDATE()");
+            .Property(p => p.TicketType)
+            .HasMaxLength(20);
+
+            modelBuilder.Entity<SupportTicket>()
+            .HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > CreatedOn");
 
             modelBuilder.Entity<SupportTicket>()
             .HasCheckConstraint("CK_SupportTicket_TicketType", "TicketType IN ('Subscription', 'Billing', 'PostManagement', 'Others')");

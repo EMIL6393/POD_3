@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace POD_3.DAL.Entity.SupportModule
+namespace POD_3.DAL.Models
 {
-    public class SupportTicket
+    public class TicketDetailsModel
     {
-        [Key]
+
         [Range(1, 10)]
         public int TicketId { get; set; }
 
@@ -12,7 +12,7 @@ namespace POD_3.DAL.Entity.SupportModule
         public string RaisedByUserName { get; set; } = null!;
 
         [DataType(DataType.DateTime)]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         [DataType(DataType.DateTime)]
         public DateTime ExpectedResolutionOn { get; set; }
@@ -21,7 +21,7 @@ namespace POD_3.DAL.Entity.SupportModule
         public string? TicketSummary { get; set; }
 
         [StringLength(1000)]
-        public string TicketDetails { get; set; }= null!;
+        public string TicketDetails { get; set; } = null!;
 
         [StringLength(10)]
         public string TicketStatus { get; set; } = null!;
@@ -29,6 +29,5 @@ namespace POD_3.DAL.Entity.SupportModule
         [StringLength(20)]
         public string TicketType { get; set; } = null!;
 
-        public virtual TicketSolution? TicketSolution { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace POD_3.DAL.Models
         [StringLength(10)]
         public string UserName { get; set; } = null!;
 
+        public int UserId { get; set; }
+
         public SubscriptionPlanModel Plan { get; set; }
 
         [DataType(DataType.DateTime)]

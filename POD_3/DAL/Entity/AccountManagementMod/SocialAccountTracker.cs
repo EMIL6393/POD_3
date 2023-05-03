@@ -13,7 +13,7 @@ namespace POD_3.DAL.Entity.AccountManagementMod
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [DataType(DataType.DateTime)]
-        public DateTime Date { get; set; }= DateTime.Now;
+        public DateTime? Date { get; set; }
 
         [StringLength(25)]
         public string Action { get; set; } = null!;

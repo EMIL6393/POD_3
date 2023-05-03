@@ -44,6 +44,13 @@ namespace POD_3.BLL.Repositories.Impl
             return account;
         }
 
+        public async Task<int> GetByUsernameAsyncCount(string username)
+        {
+            var account = await dbContext.UserSocialAccounts.Where(a=>a.UserName == username).ToListAsync();
+            return account.Count;
+
+        }
+
         public async Task UpdatePlanAsync(UserSocialAccount updatedSocialAccount)
         {
             var dbEntity = await dbContext.UserSocialAccounts.SingleAsync(x => x.UserName==updatedSocialAccount.UserName);

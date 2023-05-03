@@ -38,9 +38,10 @@ namespace POD_3.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 4, 27, 11, 23, 47, 649, DateTimeKind.Local).AddTicks(6545));
 
                     b.Property<int?>("SocialAccountTypeId")
                         .HasColumnType("int");
@@ -395,7 +396,7 @@ namespace POD_3.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 4, 26, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2023, 4, 27, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("ExpectedResolutionOn")
                         .HasColumnType("datetime2");
@@ -423,14 +424,14 @@ namespace POD_3.Migrations
 
                     b.Property<string>("TicketType")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("TicketId");
 
                     b.ToTable("SupportTickets");
 
-                    b.HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > GETDATE()");
+                    b.HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > CreatedOn");
 
                     b.HasCheckConstraint("CK_SupportTicket_TicketStatus", "TicketStatus IN ('Open', 'Closed')");
 

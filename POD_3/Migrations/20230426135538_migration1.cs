@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace POD_3.Migrations
 {
-    public partial class @new : Migration
+    public partial class migration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,7 +71,7 @@ namespace POD_3.Migrations
                     TicketId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RaisedByUserName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 4, 21, 0, 0, 0, 0, DateTimeKind.Local)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 4, 26, 0, 0, 0, 0, DateTimeKind.Local)),
                     ExpectedResolutionOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TicketSummary = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     TicketDetails = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
@@ -81,7 +81,7 @@ namespace POD_3.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SupportTickets", x => x.TicketId);
-                    table.CheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > GETDATE()");
+                    table.CheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > CreatedOn");
                     table.CheckConstraint("CK_SupportTicket_TicketStatus", "TicketStatus IN ('Open', 'Closed')");
                     table.CheckConstraint("CK_SupportTicket_TicketType", "TicketType IN ('Subscription', 'Billing', 'PostManagement', 'Others')");
                 });
@@ -184,7 +184,7 @@ namespace POD_3.Migrations
                     PlanId = table.Column<int>(type: "int", nullable: false),
                     SubscriptionStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SubscriptionEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AmountPaid = table.Column<int>(type: "int", nullable: false),
+                    AmountPaid = table.Column<double>(type: "float", nullable: false),
                     PaymentMode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SubscriptionStatus = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false)
                 },
@@ -216,12 +216,18 @@ namespace POD_3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Action = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
+                    Action = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    SocialAccountTypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SocialAccountTrackers", x => x.Id);
                     table.CheckConstraint("chk_action", "Action IN ('AccountAdded', 'AccountRemoved', 'AccountPasswordChanged')");
+                    table.ForeignKey(
+                        name: "FK_SocialAccountTrackers_SocialAccountTypes_SocialAccountTypeId",
+                        column: x => x.SocialAccountTypeId,
+                        principalTable: "SocialAccountTypes",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SocialAccountTrackers_UserSocialAccounts_AccountId",
                         column: x => x.AccountId,
@@ -301,6 +307,11 @@ namespace POD_3.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SocialAccountTrackers_SocialAccountTypeId",
+                table: "SocialAccountTrackers",
+                column: "SocialAccountTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubscriptionCancellations_SubscriptionId",
                 table: "SubscriptionCancellations",
                 column: "SubscriptionId",
@@ -325,8 +336,7 @@ namespace POD_3.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserSubscriptions_UserId",
                 table: "UserSubscriptions",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using POD_3.Context;
 namespace POD_3.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20230421075608_seeduser")]
-    partial class seeduser
+    [Migration("20230426135538_migration1")]
+    partial class migration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,9 +44,14 @@ namespace POD_3.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("SocialAccountTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("SocialAccountTypeId");
 
                     b.ToTable("SocialAccountTrackers");
 
@@ -301,8 +306,8 @@ namespace POD_3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubscriptionId"), 1L, 1);
 
-                    b.Property<int>("AmountPaid")
-                        .HasColumnType("int");
+                    b.Property<double>("AmountPaid")
+                        .HasColumnType("float");
 
                     b.Property<string>("PaymentMode")
                         .IsRequired()
@@ -335,8 +340,7 @@ namespace POD_3.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserSubscriptions");
 
@@ -393,7 +397,7 @@ namespace POD_3.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 4, 21, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2023, 4, 26, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("ExpectedResolutionOn")
                         .HasColumnType("datetime2");
@@ -428,7 +432,7 @@ namespace POD_3.Migrations
 
                     b.ToTable("SupportTickets");
 
-                    b.HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > GETDATE()");
+                    b.HasCheckConstraint("CK_SupportTicket_ExpectedResolutionOn", "ExpectedResolutionOn > CreatedOn");
 
                     b.HasCheckConstraint("CK_SupportTicket_TicketStatus", "TicketStatus IN ('Open', 'Closed')");
 
@@ -491,6 +495,15 @@ namespace POD_3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin123@gmail.com",
+                            Password = "240BE518FABD2724DDB6F04EEB1DA5967448D7E831C08C8FA822809F74C720A9",
+                            Role = "SupportExecutive"
+                        });
                 });
 
             modelBuilder.Entity("POD_3.DAL.Entity.AccountManagementMod.SocialAccountTracker", b =>
@@ -500,6 +513,10 @@ namespace POD_3.Migrations
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("POD_3.DAL.Entity.AccountManagementMod.SocialAccountType", null)
+                        .WithMany("SocialAccountTrackers")
+                        .HasForeignKey("SocialAccountTypeId");
 
                     b.Navigation("UserSocialAccount");
                 });
@@ -558,6 +575,8 @@ namespace POD_3.Migrations
 
             modelBuilder.Entity("POD_3.DAL.Entity.AccountManagementMod.SocialAccountType", b =>
                 {
+                    b.Navigation("SocialAccountTrackers");
+
                     b.Navigation("UserSocialAccounts");
                 });
 

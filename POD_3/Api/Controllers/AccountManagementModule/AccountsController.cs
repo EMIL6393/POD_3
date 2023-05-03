@@ -45,17 +45,33 @@ namespace POD_3.Api.Controllers.AccountManagementModule
             var subs =  await repository.UserSubscriptionRepository.GetByUsernameAsync(accountRequestModel.UserName);
             if(subs == null)
             {
-                GenerateErrorResponse(null, errorMessage: "Subscription dosn't exist");
+               return GenerateErrorResponse(null, errorMessage: "Subscription dosn't exist");
             }
+
             var plan = await repository.SubscriptionPlanRepository.GetByIdAsync(subs.PlanId);
+
+            if(plan.Name == "basic")
+            {
+                var count = await repository.UserSocialAccountRepository.GetByUsernameAsyncCount(accountRequestModel.UserName);
+                if (count >= 3)
+                    return GenerateErrorResponse(null, errorMessage: "Cannot add more than 3 accounts for a basic subscription");
+            }
+
             accountEntity.SubscriptionName = plan.Name;
             accountEntity.SocialAccountTypeId = await repository.SocialAccountTypesRepository.GetByNameAsync(accountRequestModel.SocialAccount);
 
             await repository.UserSocialAccountRepository.AddAsync(accountEntity);
-
             await repository.SaveAsync();
 
-            return GenerateSuccessResponse(accountEntity);
+            var tracker = new SocialAccountTracker
+            {
+                AccountId = accountEntity.Id,
+                Action = "AccountAdded"
+            };
+            await repository.SocialAccountTrackerRepository.AddAsync(tracker);
+            await repository.SaveAsync();
+
+            return GenerateSuccessResponse(accountEntity,$"{accountRequestModel.SocialAccount } added for {accountEntity.UserName}");
 
         }
        
